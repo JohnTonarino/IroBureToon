@@ -67,7 +67,8 @@ Shader "IroBureToon/Opaque"
         _PlateBOffset ("Plate B Offset", Vector) = (-0.004, -0.002, 0, 0)
         _KeyPlateOffset ("Key Plate Offset", Vector) = (0, 0, 0, 0)
         _ShiftScale ("Shift Scale", Range(0, 4)) = 1
-        _EffectStrength ("Effect Strength", Range(0, 1)) = 0.32
+        _EffectStrength ("Effect Strength", Range(0, 1)) = 0.3
+        _FringeCutoff ("Fringe Cutoff", Range(0, 0.2)) = 0.03
         _Saturation ("Saturation", Range(0, 2)) = 1
 
         [Header(Outline)]
