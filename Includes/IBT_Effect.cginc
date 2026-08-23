@@ -66,13 +66,14 @@ inline half3 ApplyIrozure(IBT_V2F i, half3 litColor, half3 baseTexture)
     float2 plateAUV = i.uv + _PlateAOffset.xy * _ShiftScale;
     float2 plateBUV = i.uv + _PlateBOffset.xy * _ShiftScale;
     float2 keyPlateUV = i.uv + _KeyPlateOffset.xy * _ShiftScale;
+
     half3 plateASample = tex2D(_MainTex, plateAUV).rgb * _Color.rgb;
     half3 plateBSample = tex2D(_MainTex, plateBUV).rgb * _Color.rgb;
     half3 keyPlateSample = tex2D(_MainTex, keyPlateUV).rgb * _Color.rgb;
 
     // 中央との差分が大きい場所 = 色面や輪郭の端. 暗部は締める
-    half plateAMask = smoothstep(0.03h, 0.22h, length(plateASample - baseTexture));
-    half plateBMask = smoothstep(0.03h, 0.22h, length(plateBSample - baseTexture));
+    half plateAMask = smoothstep(_FringeCutoff, _FringeCutoff+0.2h, length(plateASample - baseTexture));
+    half plateBMask = smoothstep(_FringeCutoff, _FringeCutoff+0.2h, length(plateBSample - baseTexture));
     half keyPlateMask = smoothstep(0.45h, 0.95h, 1.0h - IBT_Luminance(keyPlateSample));
 
     half3 result = litColor;

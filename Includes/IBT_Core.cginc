@@ -20,6 +20,7 @@ float4 _PlateBOffset;
 float4 _KeyPlateOffset;
 half _ShiftScale;
 half _EffectStrength;
+half _FringeCutoff;
 half _Saturation;
 
 sampler2D _BumpMap;
