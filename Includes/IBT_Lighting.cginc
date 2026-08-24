@@ -3,6 +3,16 @@
 
 #include "IBT_Core.cginc"
 
+inline float2 TriplanarUV3D(IBT_V2F i, float scale) {
+    float3 localPos = mul(unity_WorldToObject, float4(i.positionWS, 1.0)).xyz;
+    float3 localNormal = UnityWorldToObjectDir(i.normalWS);
+    float3 n = abs(normalize(localNormal));
+
+    if (n.z >= n.x && n.z >= n.y) { return localPos.xy * scale; }
+    else if (n.x >= n.y) { return float2(localPos.z, localPos.y) * scale; }
+    else { return float2(localPos.x, localPos.z) * scale; }
+}
+
 inline half3 IBT_LimitLight(half3 lightColor)
 {
     half luminance = IBT_Luminance(lightColor);
@@ -42,7 +52,7 @@ inline half IBT_SDFFaceLitFactor(float2 uv, half3 lightDirection)
     );
 }
 
-inline half IBT_LitFactor( IBT_V2F i, half3 normalWS, half3 lightDirection)
+inline half IBT_LitFactor(IBT_V2F i, half3 normalWS, half3 lightDirection)
 {
     if (_UseSDF > 0.5h)
     {
@@ -139,6 +149,10 @@ inline half3 IBT_BaseLighting(
     half3 shadowTint = _UseSDF > 0.5h
         ? IBT_SDFFaceShadowTint(i.uv, lightLevel)
         : IBT_ShadowTint(i.uv, lightLevel);
+
+    float2 toneUV = TriplanarUV3D(i, _ShadowToneScale);
+    half tone = tex2D(_ShadowToneTex, toneUV).r;
+    shadowTint = 1.0h - tone * (1.0-shadowTint);
 
     OpenLitLightDatas lightDatas;
     IBT_UnpackOpenLitData(i, lightDatas);

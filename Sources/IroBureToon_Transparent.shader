@@ -23,6 +23,8 @@ Shader "IroBureToon/Transparent"
         _ShadowStep2 ("Lit Border", Range(0, 1)) = 0.5
         _ShadowSmoothness ("Shadow Smoothness", Range(0.001, 0.25)) = 0.03
         _ShadowStrength ("Shadow Strength", Range(0, 1)) = 0.65
+        _ShadowToneTex ("Shadow Tone Texture", 2D) = "white" {}
+        _ShadowToneScale ("Shadow Tone Scale", Float) = 1.0
         [Toggle] _UseSDF ("Use SDF Face Shadow", Float) = 0
         _SDFMaskTex ("SDF Face Mask", 2D) = "white" {}
 
