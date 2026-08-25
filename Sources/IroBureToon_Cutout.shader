@@ -62,7 +62,7 @@ Shader "IroBureToon/Cutout"
 
         [Header(IroBre)]
         [Space(10)]
-        [Enum(Custom,0,PinkBlue,1,RedBlue,2,BlackCyan,3,Vintage,4)]
+        [Enum(Custom,0,PinkBlue,1,RedBlue,2,RedCyan,3,Vintage,4)]
         _IBTPreset ("Ink Preset", Float) = 0
         _CustomAColor ("Custom A Color", Color) = (1, 0.08, 0.25, 1)
         _CustomBColor ("Custom B Color", Color) = (0, 0.55, 1, 1)
