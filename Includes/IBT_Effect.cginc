@@ -34,10 +34,10 @@ inline void IrozurePreset(
         keyPlateInk = half3(0.05h, 0.045h, 0.04h);
         return;
     }
-    // 3 = BlackCyan
+    // 3 = RedCyan
     if (preset < 3.5)
     {
-        plateAInk = half3(0.85h, 0.12h, 0.25h);
+        plateAInk = half3(0.95h, 0.12h, 0.08h);
         plateBInk = half3(0.00h, 0.80h, 0.85h);
         keyPlateInk = half3(0.035h, 0.04h, 0.055h);
         return;
