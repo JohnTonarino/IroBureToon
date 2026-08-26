@@ -21,6 +21,8 @@ Shader "IroBureToon/Opaque"
         _ShadowStep2 ("Lit Border", Range(0, 1)) = 0.5
         _ShadowSmoothness ("Shadow Smoothness", Range(0.001, 0.25)) = 0.03
         _ShadowStrength ("Shadow Strength", Range(0, 1)) = 0.65
+        _ShadowToneTex ("Shadow Tone Texture", 2D) = "white" {}
+        _ShadowToneScale ("Shadow Tone Scale", Float) = 1.0
         [Toggle] _UseSDF ("Use SDF Face Shadow", Float) = 0
         _SDFMaskTex ("SDF Face Mask", 2D) = "white" {}
 
@@ -58,7 +60,7 @@ Shader "IroBureToon/Opaque"
 
         [Header(IroBre)]
         [Space(10)]
-        [Enum(Custom,0,PinkBlue,1,RedBlue,2,BlackCyan,3,Vintage,4)]
+        [Enum(Custom,0,PinkBlue,1,RedBlue,2,RedCyan,3,Vintage,4)]
         _IBTPreset ("Ink Preset", Float) = 0
         _CustomAColor ("Custom A Color", Color) = (1, 0.08, 0.25, 1)
         _CustomBColor ("Custom B Color", Color) = (0, 0.55, 1, 1)
@@ -67,7 +69,8 @@ Shader "IroBureToon/Opaque"
         _PlateBOffset ("Plate B Offset", Vector) = (-0.004, -0.002, 0, 0)
         _KeyPlateOffset ("Key Plate Offset", Vector) = (0, 0, 0, 0)
         _ShiftScale ("Shift Scale", Range(0, 4)) = 1
-        _EffectStrength ("Effect Strength", Range(0, 1)) = 0.32
+        _EffectStrength ("Effect Strength", Range(0, 1)) = 0.3
+        _FringeCutoff ("Fringe Cutoff", Range(0, 0.2)) = 0.03
         _Saturation ("Saturation", Range(0, 2)) = 1
 
         [Header(Outline)]

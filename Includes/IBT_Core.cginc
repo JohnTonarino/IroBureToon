@@ -20,6 +20,7 @@ float4 _PlateBOffset;
 float4 _KeyPlateOffset;
 half _ShiftScale;
 half _EffectStrength;
+half _FringeCutoff;
 half _Saturation;
 
 sampler2D _BumpMap;
@@ -32,6 +33,8 @@ half _ShadowStep1;
 half _ShadowStep2;
 half _ShadowSmoothness;
 half _ShadowStrength;
+sampler2D _ShadowToneTex;
+half _ShadowToneScale;
 float _UseSDF;
 sampler2D _SDFMaskTex;
 
