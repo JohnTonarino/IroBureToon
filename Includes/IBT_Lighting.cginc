@@ -125,7 +125,7 @@ inline half3 IBT_Rim(half3 baseColor, float2 uv, half3 normalWS, half3 viewDirec
     half rimShape = pow(max(rimBase, 0.0001h), max(_RimPower, 0.0001h));
     half rim = smoothstep(0.5h - _RimSmoothness, 0.5h + _RimSmoothness, rimShape);
     rim *= tex2D(_RimMask, uv).r * _RimStrength;
-    return 1.0h - (1.0h - baseColor.rgb) * (1.0h - _RimColor * rim);
+    return 1.0h - (1.0h - baseColor.rgb) * (1.0h - _RimColor.rgb * rim);
 }
 
 inline half3 IBT_LightVolumeLighting(IBT_V2F i, half3 normalWS)
