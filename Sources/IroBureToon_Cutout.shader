@@ -1,3 +1,6 @@
+// Copyright (c) 2026 JohnTonarino
+// Released under the MIT license
+// IroBureToon v 1.0.0
 Shader "IroBureToon/Cutout"
 {
     Properties
@@ -144,12 +147,12 @@ Shader "IroBureToon/Cutout"
                 half3 lightDirection = IBT_LightDirection(i);
 
                 half3 matCapAlbedo = IBT_MatCap(mainSample.rgb, i.uv, normalWS);
-                half3 irozureAlbedo = ApplyIrozure(i, matCapAlbedo.rgb, mainSample.rgb);
-                irozureAlbedo = IBT_Rim(irozureAlbedo, i.uv, normalWS, viewDirection);
+                half3 irobureAlbedo = ApplyIrobure(i, matCapAlbedo.rgb, mainSample.rgb);
+                irobureAlbedo = IBT_Rim(irobureAlbedo, i.uv, normalWS, viewDirection);
 
                 half3 color = IBT_BaseLighting(
                     i,
-                    irozureAlbedo,
+                    irobureAlbedo,
                      normalWS,
                     lightDirection,
                     attenuation
@@ -194,7 +197,7 @@ Shader "IroBureToon/Cutout"
                 clip(alpha - _TransparentLevel);
 
                 fixed3 baseAlbedo = tex2D(_MainTex, i.uv).rgb * _Color.rgb;
-                half3 irozureAlbedo = ApplyIrozure(i, baseAlbedo, baseAlbedo);
+                half3 irobureAlbedo = ApplyIrobure(i, baseAlbedo, baseAlbedo);
 
                 half3 normalWS = IBT_NormalWS(i);
                 half3 viewDirection = normalize(UnityWorldSpaceViewDir(i.positionWS));
@@ -215,7 +218,7 @@ Shader "IroBureToon/Cutout"
                 toonLight = lerp(1.0h, toonLight, _ShadowStrength);
 
                 half3 addLight = OPENLIT_LIGHT_COLOR * attenuation;
-                half3 contribution = irozureAlbedo * addLight * toonLight;
+                half3 contribution = irobureAlbedo * addLight * toonLight;
                 contribution += IBT_Specular(normalWS, lightDirection, viewDirection) * addLight;
                 fixed4 result = fixed4(contribution, 0);
 
