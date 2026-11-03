@@ -61,7 +61,7 @@ Shader "IroBureToon/Opaque"
         [Toggle] _VRCLightVolumesOn ("VRChat Light Volumes", Float) = 0
         _VRCLightVolumesStrength ("Light Volumes Strength", Range(0, 1)) = 1
 
-        [Header(IroBre)]
+        [Header(IroBure)]
         [Space(10)]
         [Enum(Custom,0,PinkBlue,1,RedBlue,2,RedCyan,3,Vintage,4)]
         _IBTPreset ("Ink Preset", Float) = 0
