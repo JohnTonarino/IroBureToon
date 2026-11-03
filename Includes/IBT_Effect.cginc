@@ -12,7 +12,7 @@ inline half3 IBT_Saturation(half3 color, half saturation)
     return lerp(luminance.xxx, color, saturation);
 }
 
-inline void IrozurePreset(
+inline void IroburePreset(
     float preset,
     inout half3 plateAInk,
     inout half3 plateBInk,
@@ -52,14 +52,14 @@ inline void IrozurePreset(
     keyPlateInk = half3(0.10h, 0.085h, 0.065h);
 }
 
-inline half3 ApplyIrozure(IBT_V2F i, half3 litColor, half3 baseTexture)
+inline half3 ApplyIrobure(IBT_V2F i, half3 litColor, half3 baseTexture)
 {
     half3 plateAInk = _CustomAColor.rgb;
     half3 plateBInk = _CustomBColor.rgb;
     half3 keyPlateInk = _CustomKeyColor.rgb;
     half effectStrength = _EffectStrength;
     half saturation = _Saturation;
-    IrozurePreset(
+    IroburePreset(
         _IBTPreset,
         plateAInk,
         plateBInk,
