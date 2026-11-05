@@ -142,9 +142,4 @@ inline half3 IBT_NormalWS(IBT_V2F i)
     );
 }
 
-inline half IBT_Luminance(half3 color)
-{
-    return dot(color, half3(0.299h, 0.587h, 0.114h));
-}
-
 #endif

@@ -106,6 +106,7 @@ Shader "IroBureToon/Transparent"
         #pragma target 3.0
         #include "../Includes/IBT_Core.cginc"
         #include "../Includes/IBT_Lighting.cginc"
+        #include "../Includes/JTN_Lighting.cginc"
         #include "../Includes/IBT_Effect.cginc"
 
         sampler2D _TransparentMask;
@@ -144,7 +145,7 @@ Shader "IroBureToon/Transparent"
 
                 half3 normalWS = IBT_NormalWS(i);
                 half3 viewDirection = normalize(UnityWorldSpaceViewDir(i.positionWS));
-                half3 lightDirection = IBT_LightDirection(i);
+                half3 lightDirection = JTN_LightDirection(i);
 
                 half3 matCapAlbedo = IBT_MatCap(mainSample.rgb, i.uv, normalWS);
                 half3 irobureAlbedo = ApplyIrobure(i, matCapAlbedo.rgb, mainSample.rgb);
@@ -158,7 +159,7 @@ Shader "IroBureToon/Transparent"
                 );
 
                 OpenLitLightDatas lightDatas;
-                IBT_UnpackOpenLitData(i, lightDatas);
+                JTN_UnpackOpenLitData(i, lightDatas);
                 color += IBT_Specular(normalWS, lightDirection, viewDirection) * lightDatas.directLight * attenuation;
                 color += tex2D(_EmissionMap, i.uv).rgb * _EmissionColor.rgb;
 
@@ -202,10 +203,10 @@ Shader "IroBureToon/Transparent"
                 half3 viewDirection = normalize(UnityWorldSpaceViewDir(i.positionWS));
 
                 OpenLitLightDatas lightDatas;
-                IBT_UnpackOpenLitData(i, lightDatas);
+                JTN_UnpackOpenLitData(i, lightDatas);
                 half3 lightDirection = normalize(UnityWorldSpaceLightDir(i.positionWS));
 
-                half lightLevel = IBT_LitFactor(i, normalWS, lightDirection);
+                half lightLevel = JTN_LitFactor(i, normalWS, lightDirection);
                 half edge = max(_ShadowSmoothness, 0.0001h);
                 half toonLight = _UseSDF > 0.5h?
                 lightLevel
@@ -268,7 +269,7 @@ Shader "IroBureToon/Transparent"
                 clip(alpha - _TransparentLevel);
 
                 fixed4 color = _OutlineColor;
-                half3 ambient = IBT_LimitLight(ShadeSH9(half4(0, 1, 0, 1)));
+                half3 ambient = JTN_LimitLight(ShadeSH9(half4(0, 1, 0, 1)));
                 color.rgb *= lerp(half3(1, 1, 1), ambient, _OutlineLighting);
                 color.a *= alpha;
 

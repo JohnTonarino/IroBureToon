@@ -104,6 +104,7 @@ Shader "IroBureToon/Opaque"
         #pragma target 3.0
         #include "../Includes/IBT_Core.cginc"
         #include "../Includes/IBT_Lighting.cginc"
+        #include "../Includes/JTN_Lighting.cginc"
         #include "../Includes/IBT_Effect.cginc"
         ENDCG
 
@@ -131,10 +132,9 @@ Shader "IroBureToon/Opaque"
                 fixed4 mainSample = tex2D(_MainTex, i.uv) * _Color;
                 half3 normalWS = IBT_NormalWS(i);
                 half3 viewDirection = normalize(UnityWorldSpaceViewDir(i.positionWS));
-                half3 lightDirection = IBT_LightDirection(i);
+                half3 lightDirection = JTN_LightDirection(i);
 
                 half3 matCapAlbedo = IBT_MatCap(mainSample.rgb, i.uv, normalWS);
-
                 half3 irobureAlbedo = ApplyIrobure(i, matCapAlbedo.rgb, mainSample.rgb);
                 irobureAlbedo = IBT_Rim(irobureAlbedo, i.uv, normalWS, viewDirection);
 
@@ -147,7 +147,7 @@ Shader "IroBureToon/Opaque"
                 );
 
                 OpenLitLightDatas lightDatas;
-                IBT_UnpackOpenLitData(i, lightDatas);
+                JTN_UnpackOpenLitData(i, lightDatas);
                 color += IBT_Specular(normalWS, lightDirection, viewDirection) * lightDatas.directLight * attenuation;
                 color += tex2D(_EmissionMap, i.uv).rgb * _EmissionColor.rgb;
 
@@ -188,10 +188,10 @@ Shader "IroBureToon/Opaque"
                 half3 viewDirection = normalize(UnityWorldSpaceViewDir(i.positionWS));
 
                 OpenLitLightDatas lightDatas;
-                IBT_UnpackOpenLitData(i, lightDatas);
+                JTN_UnpackOpenLitData(i, lightDatas);
                 half3 lightDirection = normalize(UnityWorldSpaceLightDir(i.positionWS));
 
-                half lightLevel = IBT_LitFactor(i, normalWS, lightDirection);
+                half lightLevel = JTN_LitFactor(i, normalWS, lightDirection);
                 half edge = max(_ShadowSmoothness, 0.0001h);
                 half toonLight = _UseSDF > 0.5h?
                     lightLevel

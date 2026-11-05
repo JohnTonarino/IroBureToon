@@ -5,10 +5,11 @@
 #define IBT_EFFECT_INCLUDED
 
 #include "IBT_Core.cginc"
+#include "JTN_Lighting.cginc"
 
 inline half3 IBT_Saturation(half3 color, half saturation)
 {
-    half luminance = IBT_Luminance(color);
+    half luminance = JTN_Luminance(color);
     return lerp(luminance.xxx, color, saturation);
 }
 
@@ -77,7 +78,7 @@ inline half3 ApplyIrobure(IBT_V2F i, half3 litColor, half3 baseTexture)
     // 中央との差分が大きい場所 = 色面や輪郭の端. 暗部は締める
     half plateAMask = smoothstep(_FringeCutoff, _FringeCutoff+0.2h, length(plateASample - baseTexture));
     half plateBMask = smoothstep(_FringeCutoff, _FringeCutoff+0.2h, length(plateBSample - baseTexture));
-    half keyPlateMask = smoothstep(0.45h, 0.95h, 1.0h - IBT_Luminance(keyPlateSample));
+    half keyPlateMask = smoothstep(0.45h, 0.95h, 1.0h - JTN_Luminance(keyPlateSample));
 
     half3 result = litColor;
     result = lerp(result, plateAInk, saturate(plateAMask * effectStrength * 0.55h));
