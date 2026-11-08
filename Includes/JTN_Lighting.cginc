@@ -4,7 +4,6 @@
 #ifndef JTN_LIGHTING_INCLUDED
 #define JTN_LIGHTING_INCLUDED
 
-#include "IBT_Core.cginc"
 #include "JTN_Properties.cginc"
 
 inline float2 JTN_TriplanarUV3D(float3 positionWS, float3 normalWS, float scale) {
