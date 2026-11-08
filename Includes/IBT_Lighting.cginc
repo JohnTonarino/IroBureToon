@@ -29,7 +29,7 @@ inline half3 IBT_BaseLighting(
     half3 lightDirection,
     half attenuation)
 {
-    half lightLevel = JTN_LitFactor(i, normalWS, lightDirection);
+    half lightLevel = JTN_LitFactor(i.uv, normalWS, lightDirection);
     half3 shadowTint = _UseSDF > 0.5h
         ? JTN_SDFFaceShadowTint(i.uv, lightLevel)
         : JTN_ShadowTint(i.uv, lightLevel);
@@ -50,7 +50,7 @@ inline half3 IBT_BaseLighting(
     half3 lightColor = openLitLight;
     if (_VRCLightVolumesOn > 0.5h)
     {
-        half3 volumeLight = JTN_LightVolumeLighting(i, normalWS);
+        half3 volumeLight = JTN_LightVolumeLighting(i.positionWS, normalWS);
         half volumeBlend = _VRCLightVolumesStrength * LightVolumesEnabled();
         lightColor = lerp(openLitLight, volumeLight, volumeBlend);
     }

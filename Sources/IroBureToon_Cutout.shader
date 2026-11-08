@@ -207,7 +207,7 @@ Shader "IroBureToon/Cutout"
                 IBT_UnpackOpenLitData(i, lightDatas);
                 half3 lightDirection = normalize(UnityWorldSpaceLightDir(i.positionWS));
 
-                half lightLevel = JTN_LitFactor(i, normalWS, lightDirection);
+                half lightLevel = JTN_LitFactor(i.uv, normalWS, lightDirection);
                 half edge = max(_ShadowSmoothness, 0.0001h);
                 half toonLight = _UseSDF > 0.5h?
                     lightLevel

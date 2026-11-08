@@ -17,14 +17,14 @@ inline float2 JTN_TriplanarUV3D(float3 positionWS, float3 normalWS, float scale)
     else { return float2(localPos.x, localPos.z) * scale; }
 }
 
-inline half3 JTN_LightVolumeLighting(IBT_V2F i, half3 normalWS)
+inline half3 JTN_LightVolumeLighting(float3 positionWS, half3 normalWS)
 {
     float3 lightL0;
     float3 lightL1R;
     float3 lightL1G;
     float3 lightL1B;
 
-    LightVolumeSH(i.positionWS, lightL0, lightL1R, lightL1G, lightL1B);
+    LightVolumeSH(positionWS, lightL0, lightL1R, lightL1G, lightL1B);
     half3 volumeLight = LightVolumeEvaluate(normalize(normalWS), lightL0, lightL1R, lightL1G, lightL1B);
 
     return clamp(volumeLight, 0.0h, _LightMaxLimit);
@@ -73,11 +73,11 @@ inline half3 JTN_ShadowTint(float2 uv, half lightLevel)
     return lerp(half3(1.0h, 1.0h, 1.0h), toonTint, _ShadowStrength);
 }
 
-inline half JTN_LitFactor(IBT_V2F i, half3 normalWS, half3 lightDirection)
+inline half JTN_LitFactor(float2 uv, half3 normalWS, half3 lightDirection)
 {
     if (_UseSDF > 0.5h)
     {
-        return JTN_SDFFaceLitFactor(i.uv, lightDirection);
+        return JTN_SDFFaceLitFactor(uv, lightDirection);
     }
 
     half normalLight = dot(normalWS, lightDirection) * 0.5h + 0.5h;
