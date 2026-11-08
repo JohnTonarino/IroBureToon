@@ -9,6 +9,7 @@
 #include "AutoLight.cginc"
 #include "VRCLightVolumes/LightVolumes.cginc"
 #include "OpenLit/OpenLit.cginc"
+#include "JTN_Properties.cginc"
 
 sampler2D _MainTex;
 float4 _MainTex_ST;
@@ -29,27 +30,14 @@ half _Saturation;
 sampler2D _BumpMap;
 half _BumpScale;
 
-sampler2D _ShadowTex;
 fixed4 _ShadowColor1;
 fixed4 _ShadowColor2;
-half _ShadowStep1;
-half _ShadowStep2;
 half _ShadowSmoothness;
-half _ShadowStrength;
 sampler2D _ShadowToneTex;
 half _ShadowToneScale;
 float _UseSDF;
-sampler2D _SDFMaskTex;
 
-sampler2D _MatCap;
-sampler2D _MatCapMask;
-half _MatCapStrength;
 half _MatCapBlend;
-
-fixed4 _SpecularColor;
-half _SpecularStrength;
-half _SpecularSize;
-half _SpecularSmoothness;
 
 fixed4 _RimColor;
 sampler2D _RimMask;
@@ -67,10 +55,6 @@ float4 _OutlineMask_ST;
 half _OutlineLighting;
 
 // OpenLit
-half _AsUnlit;
-half _LightMinLimit;
-half _LightMaxLimit;
-half _MonochromeLighting;
 float4 _LightDirectionOverride;
 float _ReceiveShadow;
 float _BeforeExposureLimit;
@@ -79,7 +63,6 @@ float _AlphaBoostFA;
 
 // VRCLightVolumes
 float _VRCLightVolumesOn;
-half _VRCLightVolumesStrength;
 //---
 
 

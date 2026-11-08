@@ -5,6 +5,7 @@
 #define JTN_LIGHTING_INCLUDED
 
 #include "IBT_Core.cginc"
+#include "JTN_Properties.cginc"
 
 inline float2 JTN_TriplanarUV3D(float3 positionWS, float3 normalWS, float scale) {
     float3 localPos = mul(unity_WorldToObject, float4(positionWS, 1.0)).xyz;
