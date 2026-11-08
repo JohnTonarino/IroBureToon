@@ -53,9 +53,9 @@ inline half3 IBT_BaseLighting(
     half attenuation)
 {
     half lightLevel = JTN_LitFactor(i.uv, normalWS, lightDirection);
-    half3 shadowTint = _UseSDF > 0.5h
-        ? JTN_SDFFaceShadowTint(i.uv, lightLevel)
-        : JTN_ShadowTint(i.uv, lightLevel);
+    half3 shadowTint = _UseSDF != 0u?
+        JTN_SDFFaceShadowTint(i.uv, lightLevel) :
+        JTN_ShadowTint(i.uv, lightLevel);
 
     float2 toneUV = JTN_TriplanarUV3D(i.positionWS, i.normalWS, _ShadowToneScale);
     half tone = tex2D(_ShadowToneTex, toneUV).r;

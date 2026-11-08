@@ -35,7 +35,6 @@ fixed4 _ShadowColor2;
 half _ShadowSmoothness;
 sampler2D _ShadowToneTex;
 half _ShadowToneScale;
-float _UseSDF;
 
 half _MatCapBlend;
 

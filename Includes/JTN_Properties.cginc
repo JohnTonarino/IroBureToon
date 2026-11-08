@@ -10,6 +10,7 @@ half      _ShadowStep1;
 half      _ShadowStep2;
 half      _ShadowStrength;
 sampler2D _SDFMaskTex;
+uint      _UseSDF;
 
 // MatCap
 sampler2D _MatCap;

@@ -28,7 +28,7 @@ Shader "IroBureToon/Cutout"
         _ShadowStrength ("Shadow Strength", Range(0, 1)) = 0.65
         _ShadowToneTex ("Shadow Tone Texture", 2D) = "white" {}
         _ShadowToneScale ("Shadow Tone Scale", Float) = 1.0
-        [Toggle] _UseSDF ("Use SDF Face Shadow", Float) = 0
+        [Toggle] _UseSDF ("Use SDF Face Shadow", Int) = 0
         _SDFMaskTex ("SDF Face Mask", 2D) = "white" {}
 
         [Header(MatCap)]
@@ -209,9 +209,9 @@ Shader "IroBureToon/Cutout"
 
                 half lightLevel = JTN_LitFactor(i.uv, normalWS, lightDirection);
                 half edge = max(_ShadowSmoothness, 0.0001h);
-                half toonLight = _UseSDF > 0.5h?
-                    lightLevel
-                    : smoothstep(
+                half toonLight = _UseSDF != 0u?
+                    lightLevel:
+                    smoothstep(
                         _ShadowStep2 - edge,
                         _ShadowStep2 + edge,
                         lightLevel
