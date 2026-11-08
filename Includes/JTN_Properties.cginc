@@ -6,22 +6,14 @@
 
 // Toon Shadow
 sampler2D _ShadowTex;
+fixed4    _ShadowColor1;
+fixed4    _ShadowColor2;
 half      _ShadowStep1;
 half      _ShadowStep2;
+half      _ShadowSmoothness;
 half      _ShadowStrength;
 sampler2D _SDFMaskTex;
 uint      _UseSDF;
-
-// MatCap
-sampler2D _MatCap;
-sampler2D _MatCapMask;
-half      _MatCapStrength;
-
-// Specular
-fixed4    _SpecularColor;
-half      _SpecularStrength;
-half      _SpecularSize;
-half      _SpecularSmoothness;
 
 // Lighting Control (OpenLit)
 half      _AsUnlit;

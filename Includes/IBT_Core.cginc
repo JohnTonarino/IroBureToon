@@ -30,19 +30,26 @@ half _Saturation;
 sampler2D _BumpMap;
 half _BumpScale;
 
-fixed4 _ShadowColor1;
-fixed4 _ShadowColor2;
-half _ShadowSmoothness;
 sampler2D _ShadowToneTex;
 half _ShadowToneScale;
 
-half _MatCapBlend;
+// MatCap
+sampler2D _MatCap;
+sampler2D _MatCapMask;
+half      _MatCapStrength;
+half      _MatCapBlend;
 
 fixed4 _RimColor;
 sampler2D _RimMask;
 half _RimStrength;
 half _RimPower;
 half _RimSmoothness;
+
+// Specular
+fixed4    _SpecularColor;
+half      _SpecularStrength;
+half      _SpecularSize;
+half      _SpecularSmoothness;
 
 sampler2D _EmissionMap;
 fixed4 _EmissionColor;
