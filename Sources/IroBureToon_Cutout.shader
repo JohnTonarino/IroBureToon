@@ -145,7 +145,7 @@ Shader "IroBureToon/Cutout"
 
                 half3 normalWS = IBT_NormalWS(i);
                 half3 viewDirection = normalize(UnityWorldSpaceViewDir(i.positionWS));
-                half3 lightDirection = JTN_LightDirection(i);
+                half3 lightDirection = IBT_LightDirection(i);
 
                 half3 matCapAlbedo = IBT_MatCap(mainSample.rgb, i.uv, normalWS);
                 half3 irobureAlbedo = ApplyIrobure(i, matCapAlbedo.rgb, mainSample.rgb);
@@ -160,7 +160,7 @@ Shader "IroBureToon/Cutout"
                 );
 
                 OpenLitLightDatas lightDatas;
-                JTN_UnpackOpenLitData(i, lightDatas);
+                IBT_UnpackOpenLitData(i, lightDatas);
                 color += IBT_Specular(normalWS, lightDirection, viewDirection) * lightDatas.directLight * attenuation;
                 color += tex2D(_EmissionMap, i.uv).rgb * _EmissionColor.rgb;
 
@@ -204,7 +204,7 @@ Shader "IroBureToon/Cutout"
                 half3 viewDirection = normalize(UnityWorldSpaceViewDir(i.positionWS));
 
                 OpenLitLightDatas lightDatas;
-                JTN_UnpackOpenLitData(i, lightDatas);
+                IBT_UnpackOpenLitData(i, lightDatas);
                 half3 lightDirection = normalize(UnityWorldSpaceLightDir(i.positionWS));
 
                 half lightLevel = JTN_LitFactor(i, normalWS, lightDirection);

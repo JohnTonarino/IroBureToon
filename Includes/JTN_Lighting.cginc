@@ -30,11 +30,6 @@ inline half3 JTN_LightVolumeLighting(IBT_V2F i, half3 normalWS)
     return clamp(volumeLight, 0.0h, _LightMaxLimit);
 }
 
-inline void JTN_UnpackOpenLitData(IBT_V2F i, out OpenLitLightDatas lightDatas)
-{
-    UnpackLightDatas(lightDatas, i.lightDatas);
-}
-
 inline half JTN_SDFFaceLitFactor(float2 uv, half3 lightDirection)
 {
     half3 objectRight = normalize(unity_ObjectToWorld._m00_m10_m20);
@@ -87,13 +82,6 @@ inline half JTN_LitFactor(IBT_V2F i, half3 normalWS, half3 lightDirection)
 
     half normalLight = dot(normalWS, lightDirection) * 0.5h + 0.5h;
     return normalLight;
-}
-
-inline half3 JTN_LightDirection(IBT_V2F i)
-{
-    OpenLitLightDatas lightDatas;
-    JTN_UnpackOpenLitData(i, lightDatas);
-    return lightDatas.lightDirection;
 }
 
 inline half JTN_Luminance(half3 color)

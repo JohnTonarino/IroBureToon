@@ -39,7 +39,7 @@ inline half3 IBT_BaseLighting(
     shadowTint = 1.0h - tone * (1.0-shadowTint);
 
     OpenLitLightDatas lightDatas;
-    JTN_UnpackOpenLitData(i, lightDatas);
+    IBT_UnpackOpenLitData(i, lightDatas);
     half3 ambient = lightDatas.indirectLight;
     half3 direct = lightDatas.directLight;
     half receiveAttenuation = lerp(1.0h, attenuation, saturate(_ReceiveShadow));

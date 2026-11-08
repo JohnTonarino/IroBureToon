@@ -90,6 +90,18 @@ struct IBT_V2F
     UNITY_VERTEX_OUTPUT_STEREO
 };
 
+inline void IBT_UnpackOpenLitData(IBT_V2F i, out OpenLitLightDatas lightDatas)
+{
+    UnpackLightDatas(lightDatas, i.lightDatas);
+}
+
+inline half3 IBT_LightDirection(IBT_V2F i)
+{
+    OpenLitLightDatas lightDatas;
+    IBT_UnpackOpenLitData(i, lightDatas);
+    return lightDatas.lightDirection;
+}
+
 IBT_V2F IBT_Vert(IBT_AppData v)
 {
     IBT_V2F o;
