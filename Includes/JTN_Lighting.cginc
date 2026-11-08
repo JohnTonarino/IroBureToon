@@ -97,42 +97,5 @@ inline half3 JTN_LimitLight(half3 lightColor)
     return max(lightColor, _LightMinLimit.xxx);
 }
 
-inline half3 JTN_MatCap(float3 baseColor, float2 uv, half3 normalWS)
-{
-    half3 normalVS = mul((half3x3)UNITY_MATRIX_V, normalWS);
-    float2 matCapUV = normalVS.xy * 0.5 + 0.5;
-    half3 matCap = tex2D(_MatCap, matCapUV).rgb;
-    half mask = tex2D(_MatCapMask, uv).r * _MatCapStrength;
-
-    if (_MatCapBlend > 0.5h)
-    {
-        return baseColor * (half3(1.0h, 1.0h, 1.0h) + matCap * mask);
-    }
-    else
-    {
-        // Lerp: black is transparent, MatCap RGB is the visible color
-        half matCapLevel = max(matCap.r, max(matCap.g, matCap.b));
-        half amount = (matCapLevel * mask);
-        return baseColor * (1.0h - amount) + matCap * mask;
-    }
-}
-
-inline half3 JTN_Rim(half3 baseColor, float2 uv, half3 normalWS, half3 viewDirection)
-{
-    half rimBase = 1.0h - saturate(dot(normalWS, viewDirection));
-    half rimShape = pow(max(rimBase, 0.0001h), max(_RimPower, 0.0001h));
-    half rim = smoothstep(0.5h - _RimSmoothness, 0.5h + _RimSmoothness, rimShape);
-    rim *= tex2D(_RimMask, uv).r * _RimStrength;
-    return 1.0h - (1.0h - baseColor.rgb) * (1.0h - _RimColor.rgb * rim);
-}
-
-inline half3 JTN_Specular(half3 normalWS, half3 lightDirection, half3 viewDirection)
-{
-    half3 halfDirection = normalize(lightDirection + viewDirection);
-    half normalHalf = saturate(dot(normalWS, halfDirection));
-    half edge = max(_SpecularSmoothness, 0.0001h);
-    half specular = smoothstep(_SpecularSize - edge, _SpecularSize + edge, normalHalf);
-    return _SpecularColor.rgb * (specular * _SpecularStrength);
-}
 
 #endif
