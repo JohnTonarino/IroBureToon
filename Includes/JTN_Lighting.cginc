@@ -31,21 +31,24 @@ inline half3 JTN_LightVolumeLighting(float3 positionWS, half3 normalWS)
 
 inline half JTN_SDFFaceLitFactor(float2 uv, half3 lightDirection)
 {
-    half3 objectRight = normalize(unity_ObjectToWorld._m00_m10_m20);
+    half3 objectRight   = normalize(unity_ObjectToWorld._m00_m10_m20);
+    half3 objectUp      = normalize(unity_ObjectToWorld._m01_m11_m21);
     half3 objectForward = normalize(unity_ObjectToWorld._m02_m12_m22);
-    half rightDotLight = dot(objectRight.xz, lightDirection.xz);
-    half forwardDotLight = dot(objectForward.xz, lightDirection.xz);
+
+    half isUpright = (objectUp.y - lightDirection.y) < 0.0h ? 1.0h : -1.0h;
+    half rightDotLight = dot(objectRight.xz, lightDirection.xz)*isUpright;
+    half forwardDotLight = dot(objectForward.xz, lightDirection.xz)*isUpright;
 
     half sdfRight = tex2D(_SDFMaskTex, float2(1.0 - uv.x, uv.y)).r;
     half sdfLeft = tex2D(_SDFMaskTex, uv).r;
     half sdfThreshold = rightDotLight < 0.0h ? sdfRight : sdfLeft;
-    half directionalValue = forwardDotLight * 0.5h + 0.5h;
 
-    return 1.0h - smoothstep(
-        sdfThreshold - _ShadowSmoothness,
-        sdfThreshold + _ShadowSmoothness,
-        directionalValue
-    );
+    half directionalValue = forwardDotLight * 0.5h + 0.5h;
+    half signedDist = directionalValue - sdfThreshold;
+
+    float aa = fwidth(signedDist);
+    float edge = max(_ShadowSmoothness, aa);
+    return 1.0h- smoothstep(-edge, edge, signedDist);
 }
 
 inline half3 JTN_SDFFaceShadowTint(float2 uv, half litFactor)
