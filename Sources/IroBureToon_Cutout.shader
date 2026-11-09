@@ -60,7 +60,7 @@ Shader "IroBureToon/Cutout"
 
         [Header(VRC Light Volumes)]
         [Space(10)]
-        [Toggle] _VRCLightVolumesOn ("VRChat Light Volumes", Float) = 0
+        [Toggle] _VRCLightVolumesOn ("VRChat Light Volumes", Int) = 0
         _VRCLightVolumesStrength ("Light Volumes Strength", Range(0, 1)) = 1
 
         [Header(IroBure)]

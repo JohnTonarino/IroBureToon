@@ -71,7 +71,7 @@ inline half3 IBT_BaseLighting(
     half bandMultiplier = lerp(1.0h, lightLevel, _ShadowStrength);
     half3 openLitLight = lerp(ambient, direct, bandMultiplier);
     half3 lightColor = openLitLight;
-    if (_VRCLightVolumesOn > 0.5h)
+    if (_VRCLightVolumesOn != 0u)
     {
         half3 volumeLight = JTN_LightVolumeLighting(i.positionWS, normalWS);
         half volumeBlend = _VRCLightVolumesStrength * LightVolumesEnabled();

@@ -68,7 +68,7 @@ float _AlphaBoostFA;
 //---
 
 // VRCLightVolumes
-float _VRCLightVolumesOn;
+uint  _VRCLightVolumesOn;
 //---
 
 
