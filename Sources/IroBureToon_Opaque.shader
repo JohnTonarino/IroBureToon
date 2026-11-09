@@ -34,7 +34,7 @@ Shader "IroBureToon/Opaque"
         _MatCap ("MatCap", 2D) = "white" {}
         _MatCapMask ("MatCap Mask", 2D) = "white" {}
         _MatCapStrength ("MatCap Strength", Range(0, 1)) = 0
-        [Enum(Lerp,0,Multiply,1)] _MatCapBlend ("MatCap Blend", Float) = 0
+        [Enum(Lerp,0,Multiply,1)] _MatCapType ("MatCap Type", Int) = 0
 
         [Header(Specular)]
         [Space(10)]

@@ -14,7 +14,7 @@ inline half3 IBT_MatCap(float3 baseColor, float2 uv, half3 normalWS)
     half3 matCap = tex2D(_MatCap, matCapUV).rgb;
     half mask = tex2D(_MatCapMask, uv).r * _MatCapStrength;
 
-    if (_MatCapBlend > 0.5h)
+    if (_MatCapType != 0u)
     {
         return baseColor * (half3(1.0h, 1.0h, 1.0h) + matCap * mask);
     }

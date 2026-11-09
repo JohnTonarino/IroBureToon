@@ -37,7 +37,7 @@ half _ShadowToneScale;
 sampler2D _MatCap;
 sampler2D _MatCapMask;
 half      _MatCapStrength;
-half      _MatCapBlend;
+uint      _MatCapType;
 
 fixed4 _RimColor;
 sampler2D _RimMask;
