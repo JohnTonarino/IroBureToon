@@ -46,8 +46,8 @@ inline half JTN_SDFFaceLitFactor(float2 uv, half3 lightDirection)
     half directionalValue = forwardDotLight * 0.5h + 0.5h;
     half signedDist = directionalValue - sdfThreshold;
 
-    float aa = fwidth(signedDist);
-    float edge = max(_ShadowSmoothness, aa);
+    half aa = fwidth(signedDist);
+    half edge = max(max(_ShadowSmoothness, aa), 0.0001h);
     return 1.0h- smoothstep(-edge, edge, signedDist);
 }
 
@@ -62,7 +62,8 @@ inline half3 JTN_SDFFaceShadowTint(float2 uv, half litFactor)
 
 inline half3 JTN_ShadowTint(float2 uv, half lightLevel)
 {
-    half edge = max(_ShadowSmoothness, 0.0001h);
+    half aa = fwidth(lightLevel);
+    half edge = max(max(_ShadowSmoothness, aa), 0.0001h);
     half leaveSecondShadow = smoothstep(_ShadowStep1 - edge, _ShadowStep1 + edge, lightLevel);
     half becomeLit = smoothstep(_ShadowStep2 - edge, _ShadowStep2 + edge, lightLevel);
 

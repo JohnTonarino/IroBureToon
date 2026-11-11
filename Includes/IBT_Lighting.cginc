@@ -40,7 +40,9 @@ inline half3 IBT_Specular(half3 normalWS, half3 lightDirection, half3 viewDirect
 {
     half3 halfDirection = normalize(lightDirection + viewDirection);
     half normalHalf = saturate(dot(normalWS, halfDirection));
-    half edge = max(_SpecularSmoothness, 0.0001h);
+
+    half aa = fwidth(normalHalf);
+    half edge = max(max(_SpecularSmoothness, aa), 0.0001h);
     half specular = smoothstep(_SpecularSize - edge, _SpecularSize + edge, normalHalf);
     return _SpecularColor.rgb * (specular * _SpecularStrength);
 }
