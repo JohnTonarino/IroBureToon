@@ -67,8 +67,7 @@ inline half3 IBT_BaseLighting(
     IBT_UnpackOpenLitData(i, lightDatas);
     half3 ambient = lightDatas.indirectLight;
     half3 direct = lightDatas.directLight;
-    half receiveAttenuation = lerp(1.0h, attenuation, saturate(_ReceiveShadow));
-    direct *= receiveAttenuation;
+    direct *= IBT_ReceiveAttenuation(attenuation);
 
     half bandMultiplier = lerp(1.0h, lightLevel, _ShadowStrength);
     half3 openLitLight = lerp(ambient, direct, bandMultiplier);

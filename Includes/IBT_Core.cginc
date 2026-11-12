@@ -108,6 +108,11 @@ inline half3 IBT_LightDirection(IBT_V2F i)
     return lightDatas.lightDirection;
 }
 
+inline half IBT_ReceiveAttenuation(half attenuation)
+{
+    return lerp(1.0h, attenuation, saturate(_ReceiveShadow));
+}
+
 IBT_V2F IBT_Vert(IBT_AppData v)
 {
     IBT_V2F o;

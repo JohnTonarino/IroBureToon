@@ -161,7 +161,8 @@ Shader "IroBureToon/Cutout"
 
                 OpenLitLightDatas lightDatas;
                 IBT_UnpackOpenLitData(i, lightDatas);
-                color += IBT_Specular(normalWS, lightDirection, viewDirection) * lightDatas.directLight * attenuation;
+                color += IBT_Specular(normalWS, lightDirection, viewDirection)
+                        * lightDatas.directLight * IBT_ReceiveAttenuation(attenuation);
                 color += tex2D(_EmissionMap, i.uv).rgb * _EmissionColor.rgb;
 
                 fixed4 result = fixed4(saturate(color), alpha);
