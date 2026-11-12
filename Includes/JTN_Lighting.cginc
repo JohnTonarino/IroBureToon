@@ -6,6 +6,19 @@
 
 #include "JTN_Properties.cginc"
 
+inline half JTN_Luminance(half3 color)
+{
+    return dot(color, half3(0.299h, 0.587h, 0.114h));
+}
+
+inline half3 JTN_LimitLight(half3 lightColor)
+{
+    half luminance = JTN_Luminance(lightColor);
+    lightColor = lerp(lightColor, luminance.xxx, _MonochromeLighting);
+    lightColor = min(lightColor, _LightMaxLimit.xxx);
+    return max(lightColor, _LightMinLimit.xxx);
+}
+
 inline float2 JTN_TriplanarUV3D(float3 positionWS, float3 normalWS, float scale) {
     float3 localPos = mul(unity_WorldToObject, float4(positionWS, 1.0)).xyz;
     float3 localNormal = UnityWorldToObjectDir(normalWS);
@@ -86,19 +99,5 @@ inline half JTN_LitFactor(float2 uv, half3 normalWS, half3 lightDirection)
     half normalLight = dot(normalWS, lightDirection) * 0.5h + 0.5h;
     return normalLight;
 }
-
-inline half JTN_Luminance(half3 color)
-{
-    return dot(color, half3(0.299h, 0.587h, 0.114h));
-}
-
-inline half3 JTN_LimitLight(half3 lightColor)
-{
-    half luminance = JTN_Luminance(lightColor);
-    lightColor = lerp(lightColor, luminance.xxx, _MonochromeLighting);
-    lightColor = min(lightColor, _LightMaxLimit.xxx);
-    return max(lightColor, _LightMinLimit.xxx);
-}
-
 
 #endif
