@@ -26,7 +26,7 @@ inline half3 JTN_LightVolumeLighting(float3 positionWS, half3 normalWS)
     LightVolumeSH(positionWS, lightL0, lightL1R, lightL1G, lightL1B);
     half3 volumeLight = LightVolumeEvaluate(normalize(normalWS), lightL0, lightL1R, lightL1G, lightL1B);
 
-    return clamp(volumeLight, 0.0h, _LightMaxLimit);
+    return JTN_LimitLight(volumeLight);
 }
 
 inline half JTN_SDFFaceLitFactor(float2 uv, half3 lightDirection)
