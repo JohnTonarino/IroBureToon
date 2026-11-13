@@ -205,7 +205,7 @@ Shader "IroBureToon/Opaque"
 
                 half3 addLight = OPENLIT_LIGHT_COLOR * attenuation;
                 half3 contribution = irobureAlbedo * addLight * toonLight;
-                contribution += IBT_Specular(normalWS, lightDirection, viewDirection) * addLight;
+
                 fixed4 result = fixed4(contribution, 0);
 
                 UNITY_APPLY_FOG_COLOR(i.fogCoord, result, fixed4(0, 0, 0, 0));
