@@ -67,9 +67,13 @@ inline half3 ApplyIrobure(IBT_V2F i, half3 litColor, half3 baseTexture)
         keyPlateInk
     );
 
-    float2 plateAUV = i.uv + _PlateAOffset.xy * _ShiftScale;
-    float2 plateBUV = i.uv + _PlateBOffset.xy * _ShiftScale;
-    float2 keyPlateUV = i.uv + _KeyPlateOffset.xy * _ShiftScale;
+    // tangent.wを復元する
+    half tangentSign = dot(cross(i.normalWS, i.tangentWS), i.bitangentWS) < 0.0h ? -1.0h : 1.0h;
+    half2 offsetSign = half2(tangentSign, 1.0h);
+
+    float2 plateAUV   = i.uv + _PlateAOffset.xy   * offsetSign * _ShiftScale;
+    float2 plateBUV   = i.uv + _PlateBOffset.xy   * offsetSign * _ShiftScale;
+    float2 keyPlateUV = i.uv + _KeyPlateOffset.xy * offsetSign * _ShiftScale;
 
     half3 plateASample = tex2D(_MainTex, plateAUV).rgb * _Color.rgb;
     half3 plateBSample = tex2D(_MainTex, plateBUV).rgb * _Color.rgb;
