@@ -16,5 +16,7 @@ https://drive.google.com/file/d/12S-M_DiRoz15wMi7EFCoDH9ZP-alK7Pz/view?usp=shari
 # 更新履歴
 2026/08/28 1.0.0 リリース。
 
+2026/11/15 1.1.0 マイナー修正。FuchidoriPopToonとの共通化に向けたライブラリの追加。
+
 # 免責事項
 当シェーダーを利用することで発生したトラブルや不利益、損害については、製作者は一切責任を負いかねます。
