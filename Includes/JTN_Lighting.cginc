@@ -4,6 +4,11 @@
 #ifndef JTN_LIGHTING_INCLUDED
 #define JTN_LIGHTING_INCLUDED
 
+#include "UnityCG.cginc"
+#include "Lighting.cginc"
+#include "AutoLight.cginc"
+#include "VRCLightVolumes/LightVolumes.cginc"
+#include "OpenLit/OpenLit.cginc"
 #include "JTN_Properties.cginc"
 
 inline half JTN_Luminance(half3 color)
