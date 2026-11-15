@@ -5,6 +5,7 @@
 #define IBT_OUTLINE_INCLUDED
 
 #include "IBT_Lighting.cginc"
+#include "JTN_Lighting.cginc"
 
 struct IBT_OutlineV2F
 {
@@ -37,7 +38,7 @@ IBT_OutlineV2F IBT_OutlineVert(IBT_AppData v)
 fixed4 IBT_OutlineFrag(IBT_OutlineV2F i) : SV_Target
 {
     fixed4 color = _OutlineColor;
-    half3 ambient = IBT_LimitLight(ShadeSH9(half4(0.0h, 1.0h, 0.0h, 1.0h)));
+    half3 ambient = JTN_LimitLight(ShadeSH9(half4(0.0h, 1.0h, 0.0h, 1.0h)));
     color.rgb *= lerp(half3(1.0h, 1.0h, 1.0h), ambient, _OutlineLighting);
     UNITY_APPLY_FOG(i.fogCoord, color);
     return color;

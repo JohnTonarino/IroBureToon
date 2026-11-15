@@ -9,6 +9,7 @@
 #include "AutoLight.cginc"
 #include "VRCLightVolumes/LightVolumes.cginc"
 #include "OpenLit/OpenLit.cginc"
+#include "JTN_Properties.cginc"
 
 sampler2D _MainTex;
 float4 _MainTex_ST;
@@ -29,33 +30,26 @@ half _Saturation;
 sampler2D _BumpMap;
 half _BumpScale;
 
-sampler2D _ShadowTex;
-fixed4 _ShadowColor1;
-fixed4 _ShadowColor2;
-half _ShadowStep1;
-half _ShadowStep2;
-half _ShadowSmoothness;
-half _ShadowStrength;
 sampler2D _ShadowToneTex;
 half _ShadowToneScale;
-float _UseSDF;
-sampler2D _SDFMaskTex;
 
+// MatCap
 sampler2D _MatCap;
 sampler2D _MatCapMask;
-half _MatCapStrength;
-half _MatCapBlend;
-
-fixed4 _SpecularColor;
-half _SpecularStrength;
-half _SpecularSize;
-half _SpecularSmoothness;
+half      _MatCapStrength;
+uint      _MatCapType;
 
 fixed4 _RimColor;
 sampler2D _RimMask;
 half _RimStrength;
 half _RimPower;
 half _RimSmoothness;
+
+// Specular
+fixed4    _SpecularColor;
+half      _SpecularStrength;
+half      _SpecularSize;
+half      _SpecularSmoothness;
 
 sampler2D _EmissionMap;
 fixed4 _EmissionColor;
@@ -67,10 +61,6 @@ float4 _OutlineMask_ST;
 half _OutlineLighting;
 
 // OpenLit
-half _AsUnlit;
-half _LightMinLimit;
-half _LightMaxLimit;
-half _MonochromeLighting;
 float4 _LightDirectionOverride;
 float _ReceiveShadow;
 float _BeforeExposureLimit;
@@ -78,8 +68,7 @@ float _AlphaBoostFA;
 //---
 
 // VRCLightVolumes
-float _VRCLightVolumesOn;
-half _VRCLightVolumesStrength;
+uint  _VRCLightVolumesOn;
 //---
 
 
@@ -106,6 +95,23 @@ struct IBT_V2F
     UNITY_LIGHTING_COORDS(8, 9)
     UNITY_VERTEX_OUTPUT_STEREO
 };
+
+inline void IBT_UnpackOpenLitData(IBT_V2F i, out OpenLitLightDatas lightDatas)
+{
+    UnpackLightDatas(lightDatas, i.lightDatas);
+}
+
+inline half3 IBT_LightDirection(IBT_V2F i)
+{
+    OpenLitLightDatas lightDatas;
+    IBT_UnpackOpenLitData(i, lightDatas);
+    return lightDatas.lightDirection;
+}
+
+inline half IBT_ReceiveAttenuation(half attenuation)
+{
+    return lerp(1.0h, attenuation, saturate(_ReceiveShadow));
+}
 
 IBT_V2F IBT_Vert(IBT_AppData v)
 {
@@ -140,11 +146,6 @@ inline half3 IBT_NormalWS(IBT_V2F i)
         normalize(i.bitangentWS) * normalTS.y +
         normalize(i.normalWS) * normalTS.z
     );
-}
-
-inline half IBT_Luminance(half3 color)
-{
-    return dot(color, half3(0.299h, 0.587h, 0.114h));
 }
 
 #endif

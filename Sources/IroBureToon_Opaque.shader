@@ -26,7 +26,7 @@ Shader "IroBureToon/Opaque"
         _ShadowStrength ("Shadow Strength", Range(0, 1)) = 0.65
         _ShadowToneTex ("Shadow Tone Texture", 2D) = "white" {}
         _ShadowToneScale ("Shadow Tone Scale", Float) = 1.0
-        [Toggle] _UseSDF ("Use SDF Face Shadow", Float) = 0
+        [Toggle] _UseSDF ("Use SDF Face Shadow", Int) = 0
         _SDFMaskTex ("SDF Face Mask", 2D) = "white" {}
 
         [Header(MatCap)]
@@ -34,7 +34,7 @@ Shader "IroBureToon/Opaque"
         _MatCap ("MatCap", 2D) = "white" {}
         _MatCapMask ("MatCap Mask", 2D) = "white" {}
         _MatCapStrength ("MatCap Strength", Range(0, 1)) = 0
-        [Enum(Lerp,0,Multiply,1)] _MatCapBlend ("MatCap Blend", Float) = 0
+        [Enum(Lerp,0,Multiply,1)] _MatCapType ("MatCap Type", Int) = 0
 
         [Header(Specular)]
         [Space(10)]
@@ -58,10 +58,10 @@ Shader "IroBureToon/Opaque"
 
         [Header(VRC Light Volumes)]
         [Space(10)]
-        [Toggle] _VRCLightVolumesOn ("VRChat Light Volumes", Float) = 0
+        [Toggle] _VRCLightVolumesOn ("VRChat Light Volumes", Int) = 0
         _VRCLightVolumesStrength ("Light Volumes Strength", Range(0, 1)) = 1
 
-        [Header(IroBre)]
+        [Header(IroBure)]
         [Space(10)]
         [Enum(Custom,0,PinkBlue,1,RedBlue,2,RedCyan,3,Vintage,4)]
         _IBTPreset ("Ink Preset", Float) = 0
@@ -104,6 +104,7 @@ Shader "IroBureToon/Opaque"
         #pragma target 3.0
         #include "../Includes/IBT_Core.cginc"
         #include "../Includes/IBT_Lighting.cginc"
+        #include "../Includes/JTN_Lighting.cginc"
         #include "../Includes/IBT_Effect.cginc"
         ENDCG
 
@@ -134,7 +135,6 @@ Shader "IroBureToon/Opaque"
                 half3 lightDirection = IBT_LightDirection(i);
 
                 half3 matCapAlbedo = IBT_MatCap(mainSample.rgb, i.uv, normalWS);
-
                 half3 irobureAlbedo = ApplyIrobure(i, matCapAlbedo.rgb, mainSample.rgb);
                 irobureAlbedo = IBT_Rim(irobureAlbedo, i.uv, normalWS, viewDirection);
 
@@ -148,7 +148,8 @@ Shader "IroBureToon/Opaque"
 
                 OpenLitLightDatas lightDatas;
                 IBT_UnpackOpenLitData(i, lightDatas);
-                color += IBT_Specular(normalWS, lightDirection, viewDirection) * lightDatas.directLight * attenuation;
+                color += IBT_Specular(normalWS, lightDirection, viewDirection)
+                        * lightDatas.directLight * IBT_ReceiveAttenuation(attenuation);
                 color += tex2D(_EmissionMap, i.uv).rgb * _EmissionColor.rgb;
 
                 fixed4 result = fixed4(saturate(color), mainSample.a);
@@ -185,17 +186,13 @@ Shader "IroBureToon/Opaque"
                 half3 irobureAlbedo = ApplyIrobure(i, baseAlbedo, baseAlbedo);
 
                 half3 normalWS = IBT_NormalWS(i);
-                half3 viewDirection = normalize(UnityWorldSpaceViewDir(i.positionWS));
-
-                OpenLitLightDatas lightDatas;
-                IBT_UnpackOpenLitData(i, lightDatas);
                 half3 lightDirection = normalize(UnityWorldSpaceLightDir(i.positionWS));
 
-                half lightLevel = IBT_LitFactor(i, normalWS, lightDirection);
+                half lightLevel = JTN_LitFactor(i.uv, normalWS, lightDirection);
                 half edge = max(_ShadowSmoothness, 0.0001h);
-                half toonLight = _UseSDF > 0.5h?
-                    lightLevel
-                    : smoothstep(
+                half toonLight = _UseSDF != 0u?
+                    lightLevel:
+                    smoothstep(
                         _ShadowStep2 - edge,
                         _ShadowStep2 + edge,
                         lightLevel
@@ -204,7 +201,7 @@ Shader "IroBureToon/Opaque"
 
                 half3 addLight = OPENLIT_LIGHT_COLOR * attenuation;
                 half3 contribution = irobureAlbedo * addLight * toonLight;
-                contribution += IBT_Specular(normalWS, lightDirection, viewDirection) * addLight;
+
                 fixed4 result = fixed4(contribution, 0);
 
                 UNITY_APPLY_FOG_COLOR(i.fogCoord, result, fixed4(0, 0, 0, 0));
