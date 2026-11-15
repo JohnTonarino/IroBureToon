@@ -291,16 +291,22 @@ Shader "IroBureToon/Transparent"
             #pragma multi_compile_shadowcaster
             #include "UnityCG.cginc"
 
-            struct ShadowV2F { V2F_SHADOW_CASTER; };
+            struct ShadowV2F
+            {
+                V2F_SHADOW_CASTER;
+                float2 uv : TEXCOORD1;
+            };
 
             ShadowV2F vertShadow(appdata_base v)
             {
                 ShadowV2F o;
                 TRANSFER_SHADOW_CASTER_NORMALOFFSET(o)
+                o.uv = TRANSFORM_TEX(v.texcoord.xy, _MainTex);
                 return o;
             }
             float4 fragShadow(ShadowV2F i) : SV_Target
             {
+                clip(IBT_Alpha(i.uv) - _TransparentLevel);
                 SHADOW_CASTER_FRAGMENT(i)
             }
             ENDCG
