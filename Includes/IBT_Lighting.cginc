@@ -1,6 +1,6 @@
 // Copyright (c) 2026 JohnTonarino
 // Released under the MIT license
-// IroBureToon v 1.0.0
+// IroBureToon v 1.1.0
 #ifndef IBT_LIGHTING_INCLUDED
 #define IBT_LIGHTING_INCLUDED
 
