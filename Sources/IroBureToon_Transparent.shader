@@ -201,10 +201,6 @@ Shader "IroBureToon/Transparent"
                 half3 irobureAlbedo = ApplyIrobure(i, baseAlbedo, baseAlbedo);
 
                 half3 normalWS = IBT_NormalWS(i);
-                half3 viewDirection = normalize(UnityWorldSpaceViewDir(i.positionWS));
-
-                OpenLitLightDatas lightDatas;
-                IBT_UnpackOpenLitData(i, lightDatas);
                 half3 lightDirection = normalize(UnityWorldSpaceLightDir(i.positionWS));
 
                 half lightLevel = JTN_LitFactor(i.uv, normalWS, lightDirection);
